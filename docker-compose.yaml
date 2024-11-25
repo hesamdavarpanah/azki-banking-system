@@ -1,0 +1,42 @@
+services:
+  azki-postgres:
+    container_name: "azki-postgres"
+    image: "postgres:latest"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=azki_admin
+      - POSTGRES_PASSWORD=SecurePas$1376
+      - SECOND_DB_NAME=azki_db
+    volumes:
+      - ./create_second_db.sh:/docker-entrypoint-initdb.d/create_second_db.sh
+    networks:
+      - backend
+    restart: "on-failure"
+
+  azki-service:
+    container_name: "azki-service"
+    image: "azki-image:1.0"
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - APPLICATION_NAME=azkiVam
+      - SERVER_ADDRESS=0.0.0.0
+      - SERVER_PORT=8080
+      - DATABASE_DRIVER=jdbc
+      - DATABASE_SCHEME=postgresql
+      - DATABASE_HOST=azki-postgres
+      - DATABASE_PORT=5432
+      - DATABASE_NAME=azki_db
+      - DATABASE_USER=azki_admin
+      - DATABASE_PASSWORD=SecurePas$1376
+    volumes:
+      - ./transactions.log:/transactions.log
+    networks:
+      - backend
+    restart: "on-failure"
+
+networks:
+  backend:
