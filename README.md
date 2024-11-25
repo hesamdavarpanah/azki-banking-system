@@ -25,7 +25,7 @@ This is a simple banking system application built using Java and Spring Boot. Th
 ### Clone the Repository
 
 ```bash
-git clone https://github.com/hesamdavarpanah/banking-system.git
+git clone https://github.com/hesamdavarpanah/azki-banking-system.git
 cd banking-system
 ```
 
